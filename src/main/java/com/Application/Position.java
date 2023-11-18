@@ -1,14 +1,25 @@
 package com.Application;
 
-public class Position {
-    public double x;
-    public double y;
+import javafx.geometry.Pos;
 
-    public Position(double x, double y){
-        this.x = x;
-        this.y = y;
+public class Position extends Point{
+    public Position(int xPos, int yPos) throws Exception {
+        super(xPos, yPos);
+        if (!Field.isValid(xPos, yPos)) {
+            throw new Exception("Exception while initializing Position: no valid Coordinates given: " + super.print());
+        }
     }
-    public Position add(Position pos2){
-        return new Position(x+pos2.x,y+pos2.y);
+    public Position(Point point){
+        super((int) point.xPos, (int) point.yPos);
     }
+
+    public int getxPos() {
+        return (int) super.xPos;
+    }
+    public int getyPos() {
+        return (int) super.yPos;
+    }
+
+
+
 }

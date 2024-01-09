@@ -1,7 +1,5 @@
 package com.Application;
 
-import javafx.geometry.Pos;
-
 import java.util.ArrayList;
 
 public class Pawn extends Piece {

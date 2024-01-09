@@ -6,7 +6,7 @@ public class Field {
     /* indexArray saves the positions of the field and can be used to change positioning of pieces etc.
     since the playing field is not square the indices not on the field (for example [10][1]) are empty and return an
     error if tried to read/write into.
-    The indices are shifted by one since the array index starts at o while the chess indices are starting at 1.
+    The indices are shifted by one since the array index starts at 0 while the chess indices are starting at 1.
     That means b4 -> [1][3]. The first index describes the column (a, ..., k), the second describes the row (1, ..., 11)
     */
     Piece[][] pieceArray;

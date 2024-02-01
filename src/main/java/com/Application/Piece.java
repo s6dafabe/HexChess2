@@ -1,12 +1,10 @@
 package com.Application;
 
-import java.util.Arrays;
-
 public abstract class Piece {
     //The position this piece is on
     Position pos = null;
-    Boolean whitePiece;
-    public Piece(Boolean isWhite){
+    boolean whitePiece;
+    public Piece(boolean isWhite){
         whitePiece = isWhite;
     }
     //returns an array with all possible Positions this piece could move to if there were no other pieces on the field

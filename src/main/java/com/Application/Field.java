@@ -9,7 +9,9 @@ public class Field {
     The indices are shifted by one since the array index starts at 0 while the chess indices are starting at 1.
     That means b4 -> [1][3]. The first index describes the column (a, ..., k), the second describes the row (1, ..., 11)
     */
-    Piece[][] pieceArray;
+    private Piece[][] pieceArray;
+
+    private boolean whiteTurn;
     public Field(){
         pieceArray = new Piece[11][11];
         //loop through all columns
@@ -22,6 +24,17 @@ public class Field {
                 pieceArray[i][j] = null;
             }
         }
+        try {
+            //Added pawns as test
+            for(int i = 2; i<= 10;i++) {
+                //System.out.println(i+" "+Math.min(i-1,11-i));
+                pieceArray[i-1][Math.min(i-2,10-i)] = new Pawn(true, true, new Position(i, Math.min(i-1,11-i)));
+                pieceArray[i-1][6] = new Pawn(false, true, new Position(i, 7));
+            }
+        }
+        catch(Exception e){}
+
+        whiteTurn = true;
     }
 
     // returns if the Position is a valid Position on the playing field. Rows go from a-k = 1-11 and columns 1-11 = 1-11
@@ -48,6 +61,10 @@ public class Field {
 
     public void movePiece(Piece movingPiece, Position newPos) throws Exception{
         Position oldPiecePos = movingPiece.getPos();
+        if(whiteTurn != movingPiece.whitePiece){
+            throw new Exception("Wrong turn: It is " +(whiteTurn? "white":"black") +
+                    " to move, but the piece is" + (movingPiece.whitePiece ? "white":"black"));
+        }
         if (!Field.isValid(newPos)){
             throw new Exception("Piece cant move: No valid target position given: " + newPos.print() + " is not valid");
         }
@@ -68,6 +85,9 @@ public class Field {
         // Update the field array. A Piece standing on newPos before gets taken and is removed from the playing field.
         pieceArray[oldPiecePos.getxPos()][oldPiecePos.getyPos()] = null;
         pieceArray[newPos.getxPos()][newPos.getyPos()] = movingPiece;
+
+        //Update the turn
+        whiteTurn = !whiteTurn;
 
     }
 
@@ -110,8 +130,13 @@ public class Field {
         pieceArray[newPos.getxPos()][newPos.getyPos()] = movingPiece;
         pieceArray[takenPawnPos.getxPos()][takenPawnPos.getyPos()] = null;
 
-    }
+        //Update the turn
+        whiteTurn = !whiteTurn;
 
+    }
+    public Piece getPieceAtPos(Position pos){
+        return pieceArray[pos.getxPos()-1][pos.getyPos()-1];
+    }
     public static void main(String[] args) {
         new Field();
     }

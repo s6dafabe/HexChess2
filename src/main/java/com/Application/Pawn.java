@@ -9,7 +9,10 @@ public class Pawn extends Piece {
         super(isWhite);
         this.firstMove = firstMove;
     }
-
+    public Pawn(boolean isWhite, boolean firstMove,Position pos){
+        super(isWhite,pos);
+        this.firstMove = firstMove;
+    }
     //ToDo
     @Override
     public Position[] getValidMovesNoPieces() {
@@ -97,18 +100,47 @@ public class Pawn extends Piece {
     public Position[] getValidMovesWithPieces(Field currentPositions) {
         Position[] candidates = getValidMovesNoPieces();
         ArrayList<Position> valid = new ArrayList<>();
-        for(Position pos:candidates){
+        for(Position can:candidates){
             // TODO: filter legal moves
             // Move is not legal if:
             // In case i: Field moved onto is blocked
             // In case ii/iii/iv: Field moved onto is NOT blocked --> Exception En passant
             // In case v: case i would be not legal or field moved onto is blocked
 
-            // Player is in check after move
+            // TODO: Player is in check after move
 
             //if legal, add move to valid
+
+            //i think we should skip en passant for now
+            Piece blocking = currentPositions.getPieceAtPos(can);
+            //Case distinction if we move or capture
+            if(can.getxPos() == pos.getxPos()){
+                //Case i+v: Target Field is blocked
+                if(blocking != null){
+                    continue;
+                }
+                //Case v: Piece in front of pawn
+                 try {
+                     int yChange = whitePiece? 1:-1;
+                     Piece inFront = currentPositions.getPieceAtPos(new Position(pos.getxPos() + yChange, pos.getyPos()));
+                     if (inFront != null) {
+                        continue;
+                     }
+                 }
+                 catch(Exception e){}
+            }
+            else{
+
+            }
+
+
         }
         return valid.toArray(new Position[0]);
+    }
+
+    @Override
+    public void pieceUpdate(){
+        firstMove = false;
     }
     @Override
     public String printType(){

@@ -26,10 +26,11 @@ public class Field {
         }
         try {
             //Added pawns as test
-            for(int i = 2; i<= 10;i++) {
+            for(int i = 1; i <= 9;i++) {
                 //System.out.println(i+" "+Math.min(i-1,11-i));
-                pieceArray[i-1][Math.min(i-2,10-i)] = new Pawn(true, true, new Position(i, Math.min(i-1,11-i)));
-                pieceArray[i-1][6] = new Pawn(false, true, new Position(i, 7));
+                System.out.println("Piece:" + i + " "+ Math.min(i-1,11-i));
+                pieceArray[i][Math.min(i-1,9-i)] = new Pawn(true, true, new Position(i, Math.min(i-1,9-i)));
+                pieceArray[i][6] = new Pawn(false, true, new Position(i, 6));
             }
         }
         catch(Exception e){}
@@ -37,26 +38,26 @@ public class Field {
         whiteTurn = true;
     }
 
-    // returns if the Position is a valid Position on the playing field. Rows go from a-k = 1-11 and columns 1-11 = 1-11
+    // returns if the Position is a valid Position on the playing field. Rows go from a-k = 0-10 and columns 0-10
     public static boolean isValid(int x, int y){
         // check if Position lies in bounds
-        if (x < 1 || x > 11 || y < 1 || y > 11){
+        if (x < 0 || x > 10 || y < 0 || y > 10){
             return false;
         }
         // check if given position lies on non-valid fields and return true if it does
-        return y <= 11 - Math.abs(6 - x);
+        return y <= 10 - Math.abs(5 - x);
     }
 
-    // returns if the Position is a valid Position on the playing field. Rows go from a-k = 1-11 and columns 1-11 = 1-11
+    // returns if the Position is a valid Position on the playing field. Rows go from a-k = 0-10 and columns 0-10
     public static boolean isValid(Position pos){
         // check if Position lies in bounds
         int x = pos.getxPos();
         int y = pos.getyPos();
-        if (x < 1 || x > 11 || y < 1 || y > 11){
+        if (x < 0 || x > 10 || y < 0 || y > 10){
             return false;
         }
         // check if given position lies on non-valid fields and return true if it does
-        return y <= 11 - Math.abs(6 - x);
+        return y <= 10 - Math.abs(5 - x);
     }
 
     public void movePiece(Piece movingPiece, Position newPos) throws Exception{
@@ -72,7 +73,15 @@ public class Field {
             throw new Exception("Piece cant move: " + movingPiece.printType() + " not on Position " + oldPiecePos.print() + " found");
         }
         Position[] validPositions = movingPiece.getValidMovesWithPieces(this);
-        if (!Arrays.asList(validPositions).contains(newPos)){
+        boolean containedValid = false;
+        for(Position pos:validPositions){
+            System.out.println(pos.print());
+            if(newPos.equalPoint(pos)){
+                containedValid = true;
+                break;
+            }
+        }
+        if (!containedValid){
             throw new Exception("Piece cant move: Piece cant reach target position " + newPos.print());
         }
 
@@ -135,7 +144,10 @@ public class Field {
 
     }
     public Piece getPieceAtPos(Position pos){
-        return pieceArray[pos.getxPos()-1][pos.getyPos()-1];
+        return pieceArray[pos.getxPos()][pos.getyPos()];
+    }
+    public boolean whiteToMove(){
+        return whiteTurn;
     }
     public static void main(String[] args) {
         new Field();

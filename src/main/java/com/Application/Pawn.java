@@ -3,7 +3,7 @@ package com.Application;
 import java.util.ArrayList;
 
 public class Pawn extends Piece {
-    Position pos;
+
     boolean firstMove;
     public Pawn(boolean isWhite, boolean firstMove){
         super(isWhite);
@@ -122,7 +122,7 @@ public class Pawn extends Piece {
                 //Case v: Piece in front of pawn
                  try {
                      int yChange = whitePiece? 1:-1;
-                     Piece inFront = currentPositions.getPieceAtPos(new Position(pos.getxPos() + yChange, pos.getyPos()));
+                     Piece inFront = currentPositions.getPieceAtPos(new Position(pos.getxPos(), pos.getyPos()+ yChange));
                      if (inFront != null) {
                         continue;
                      }
@@ -132,7 +132,7 @@ public class Pawn extends Piece {
             else{
 
             }
-
+            valid.add(can);
 
         }
         return valid.toArray(new Position[0]);

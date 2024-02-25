@@ -15,4 +15,8 @@ public class Point {
     public String print(){
         return "(" + this.xPos + ", " + this.yPos + ")";
     }
+
+    public boolean equalPoint(Point p){
+        return xPos == p.xPos && yPos == p.yPos;
+    }
 }

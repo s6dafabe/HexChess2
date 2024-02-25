@@ -58,7 +58,7 @@ public class HelloController {
                 if(selectedPiece == null){
                     try{
                         Piece clickedPiece = backendField.getPieceAtPos(new Position(x,y));
-                        if(clickedPiece != null){
+                        if(clickedPiece != null && clickedPiece.whitePiece == backendField.whiteToMove()){
                             selectedPiece = clickedPiece;
                             selectedField = fields[x][y];
                             selectedField.setFill(Paint.valueOf("blueviolet"));
@@ -69,8 +69,8 @@ public class HelloController {
                 }
                 else{
                     try{
-                        selectedPiece.moveToIfValid(new Position(x,y),backendField);
                         Position oldPos = selectedPiece.getPos();
+                        selectedPiece.moveToIfValid(new Position(x,y),backendField);
                         ImageView movingImg = pieceSprites[oldPos.getxPos()][oldPos.getyPos()];
                         pieceSprites[oldPos.getxPos()][oldPos.getyPos()] = null;
                         pieceSprites[x][y] = movingImg;
@@ -95,8 +95,8 @@ public class HelloController {
     }
     Point offset = new Point(200,700);
     public void setUpPosition(){
-        for(int i = 1; i < 12;i++){
-            for(int j = 1; j< 12;j++){
+        for(int i = 0; i < 11;i++){
+            for(int j = 0; j< 11;j++){
                 pieceSprites[i][j] = null;
                 try {
                     Piece pieceAtPos = backendField.getPieceAtPos(new Position(i, j));
@@ -116,20 +116,23 @@ public class HelloController {
         backendField = new Field();
         selectedField = null;
         selectedPiece = null;
-        fields = new Polygon[12][12];
-        pieceSprites = new ImageView[12][12];
-        for (int j = 1; j < 7; j++) {
-            for (int i =1; i<12; i++) {
+        fields = new Polygon[11][11];
+        pieceSprites = new ImageView[11][11];
+
+        for (int j = 0; j < 6; j++) {
+            for (int i =0; i<11; i++) {
                 Point pos = PlayingField.hexIndexToCoordinates(i,j,30);
-                fields[i][j] = createHexagon(pos.add(offset),i == 0 & j == 0 ?"blueviolet" : "blue" );
+                fields[i][j] = createHexagon(pos.add(offset),"blue" );
                 fields[i][j].addEventFilter(MouseEvent.MOUSE_CLICKED,createHexEvent(i,j));
                 anchorPane.getChildren().add(fields[i][j]);
             }
         }
-        for (int j = 7; j < 12; j++) {
-            for (int i =j-5; i<18-j; i++) {
+
+        for (int j = 6; j < 11; j++) {
+            for (int i =j-5; i<16-j; i++) {
                 Point pos = PlayingField.hexIndexToCoordinates(i,j,30);
-                fields[i][j] = createHexagon(pos.add(offset),i == 0 & j == 0 ?"blueviolet" : "blue" );
+                fields[i][j] = createHexagon(pos.add(offset),"blue" );
+                fields[i][j].addEventFilter(MouseEvent.MOUSE_CLICKED,createHexEvent(i,j));
                 anchorPane.getChildren().add(fields[i][j]);
             }
         }

@@ -73,6 +73,10 @@ public class HelloController {
                         selectedPiece.moveToIfValid(new Position(x,y),backendField);
                         ImageView movingImg = pieceSprites[oldPos.getxPos()][oldPos.getyPos()];
                         pieceSprites[oldPos.getxPos()][oldPos.getyPos()] = null;
+                        //ToDo: Again, we need to change something here if we add en passant
+                        if(pieceSprites[x][y] != null){
+                            anchorPane.getChildren().remove(pieceSprites[x][y]);
+                        }
                         pieceSprites[x][y] = movingImg;
                         Point pos = PlayingField.hexIndexToCoordinates(x,y,30).add(offset);
                         movingImg.setLayoutX(pos.xPos-32);

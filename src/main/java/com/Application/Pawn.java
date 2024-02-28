@@ -34,7 +34,7 @@ public class Pawn extends Piece {
 
         // For black this means the moves are:
         // (i)          (x, y-1)                     for all x,
-        // (ii)         (x+1, y-1), (x-1, y-1)       for x = 5 (f)
+        // (ii)         (x+1, y-1), (x-1, y-1)       for x = 5 (f) (I think it actually needs to be y-2 here)
         // (iii)        (x+1, y-1), (x-1, y)         for x >= 6 (g)
         // (iv)         (x+1, y), (x-1, y-1)         for x <= 4 (e),
         // (v)          (x, y-2)                     for y=6 (starting positions for black)
@@ -59,6 +59,9 @@ public class Pawn extends Piece {
         int case234var;
         if (this.pos.getxPos() == 5){
             case234var = 2;
+            if(!this.whitePiece){
+                yChange = -2;
+            }
         }else if (this.pos.getxPos() <= 4) {
             // if black: case 4, if white case 3
             case234var = (int) (3.5 - 0.5 * yChange);
@@ -77,15 +80,15 @@ public class Pawn extends Piece {
                     valid.add(new Position(pos.getxPos() - 1, pos.getyPos() + yChange));
                 }
                 if (case234var == 3){
-                    valid.add(new Position(pos.getxPos() + 1, pos.getyPos() + yChange));
-                    valid.add(new Position(pos.getxPos() - 1, pos.getyPos()));
+                    valid.add(new Position(pos.getxPos() + 1, pos.getyPos() + 2*yChange));
+                    valid.add(new Position(pos.getxPos() - 1, pos.getyPos()+ yChange));
                 }
                 if (case234var == 4){
-                    valid.add(new Position(pos.getxPos() + 1, pos.getyPos()));
-                    valid.add(new Position(pos.getxPos() - 1, pos.getyPos() + yChange));
+                    valid.add(new Position(pos.getxPos() + 1, pos.getyPos()+yChange));
+                    valid.add(new Position(pos.getxPos() - 1, pos.getyPos() + 2*yChange));
                 }
                 // Add case v
-                if (firstMove) valid.add(new Position(pos.getxPos(), pos.getyPos() + 2 * yChange));
+                if (firstMove) valid.add(new Position(pos.getxPos(), pos.getyPos() + 2*yChange));
 
             }
             catch(Exception e){
@@ -130,7 +133,12 @@ public class Pawn extends Piece {
                  catch(Exception e){}
             }
             else{
-
+                //Case ii-iv
+                System.out.println(can.print());
+                if(blocking == null){
+                    System.out.println("No piece to capture");
+                    continue;
+                }
             }
             valid.add(can);
 

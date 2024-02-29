@@ -85,7 +85,52 @@ public class HelloController {
                     }
                     catch (Exception e){
                         System.out.println("invalid move");
-                        e.printStackTrace();
+                    }
+
+                    selectedPiece = null;
+                    selectedField.setFill(Paint.valueOf("blue"));
+                    selectedField = null;
+                }
+
+            }
+        };
+        return handler;
+    }
+    EventHandler<MouseEvent> createPieceEvent(Piece piece){
+        EventHandler<MouseEvent> handler = new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                int x = piece.getPos().getxPos();
+                int y = piece.getPos().getyPos();
+                if(selectedPiece == null){
+                    try{
+                        if(piece.whitePiece == backendField.whiteToMove()){
+                            selectedPiece = piece;
+                            selectedField = fields[x][y];
+                            selectedField.setFill(Paint.valueOf("blueviolet"));
+
+                        }
+                    }
+                    catch (Exception e){}
+                }
+                else{
+                    try{
+                        Position oldPos = selectedPiece.getPos();
+                        selectedPiece.moveToIfValid(new Position(x,y),backendField);
+                        ImageView movingImg = pieceSprites[oldPos.getxPos()][oldPos.getyPos()];
+                        pieceSprites[oldPos.getxPos()][oldPos.getyPos()] = null;
+                        //ToDo: Again, we need to change something here if we add en passant
+                        if(pieceSprites[x][y] != null){
+                            anchorPane.getChildren().remove(pieceSprites[x][y]);
+                        }
+                        pieceSprites[x][y] = movingImg;
+                        Point pos = PlayingField.hexIndexToCoordinates(x,y,30).add(offset);
+                        movingImg.setLayoutX(pos.xPos-32);
+                        movingImg.setLayoutY(pos.yPos-32);
+
+                    }
+                    catch (Exception e){
+                        System.out.println("invalid move");
                     }
 
                     selectedPiece = null;
@@ -108,6 +153,7 @@ public class HelloController {
                         Point pos = PlayingField.hexIndexToCoordinates(i,j,30);
                         ImageView pieceImage = createPiece(pos.add(offset), pieceAtPos);
                         anchorPane.getChildren().add(pieceImage);
+                        pieceImage.addEventFilter(MouseEvent.MOUSE_CLICKED,createPieceEvent(pieceAtPos));
                         pieceSprites[i][j] = pieceImage;
                     }
                 }

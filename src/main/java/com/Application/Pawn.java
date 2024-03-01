@@ -59,9 +59,6 @@ public class Pawn extends Piece {
         int case234var;
         if (this.pos.getxPos() == 5){
             case234var = 2;
-            if(!this.whitePiece){
-                yChange = -2;
-            }
         }else if (this.pos.getxPos() <= 4) {
             // if black: case 4, if white case 3
             case234var = (int) (3.5 - 0.5 * yChange);
@@ -76,16 +73,16 @@ public class Pawn extends Piece {
                 valid.add(new Position(pos.getxPos(), pos.getyPos() + yChange));
                 // Add case ii/iii/iv depending on case234var
                 if (case234var == 2){
-                    valid.add(new Position(pos.getxPos() + 1, pos.getyPos() + yChange));
-                    valid.add(new Position(pos.getxPos() - 1, pos.getyPos() + yChange));
+                    valid.add(new Position(pos.getxPos() + 1, pos.getyPos() + (whitePiece? 0: yChange)));
+                    valid.add(new Position(pos.getxPos() - 1, pos.getyPos() + (whitePiece? 0: yChange)));
                 }
                 if (case234var == 3){
-                    valid.add(new Position(pos.getxPos() + 1, pos.getyPos() + 2*yChange));
-                    valid.add(new Position(pos.getxPos() - 1, pos.getyPos()+ yChange));
+                    valid.add(new Position(pos.getxPos() + 1, pos.getyPos() + yChange));
+                    valid.add(new Position(pos.getxPos() - 1, pos.getyPos()));
                 }
                 if (case234var == 4){
-                    valid.add(new Position(pos.getxPos() + 1, pos.getyPos()+yChange));
-                    valid.add(new Position(pos.getxPos() - 1, pos.getyPos() + 2*yChange));
+                    valid.add(new Position(pos.getxPos() + 1, pos.getyPos()));
+                    valid.add(new Position(pos.getxPos() - 1, pos.getyPos() + yChange));
                 }
                 // Add case v
                 if (firstMove) valid.add(new Position(pos.getxPos(), pos.getyPos() + 2*yChange));

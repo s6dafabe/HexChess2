@@ -25,13 +25,30 @@ public class Field {
             }
         }
         try {
-            //Added pawns as test
+            //Added pawns
             for(int i = 1; i <= 9;i++) {
                 //System.out.println(i+" "+Math.min(i-1,11-i));
                 System.out.println("Piece:" + i + " "+ Math.min(i-1,11-i));
                 pieceArray[i][Math.min(i-1,9-i)] = new Pawn(true, true, new Position(i, Math.min(i-1,9-i)));
                 pieceArray[i][6] = new Pawn(false, true, new Position(i, 6));
             }
+            //Added Rooks
+            pieceArray[2][0] = new Rook(true,new Position(2,0));
+            pieceArray[8][0] = new Rook(true,new Position(8,0));
+            pieceArray[2][7] = new Rook(false,new Position(2,7));
+            pieceArray[8][7] = new Rook(false,new Position(8,7));
+            //Added bsihops
+            pieceArray[5][0] = new Bishop(true,new Position(5,0));
+            pieceArray[5][1] = new Bishop(true,new Position(5,1));
+            pieceArray[5][2] = new Bishop(true,new Position(5,2));
+            pieceArray[5][8] = new Bishop(false,new Position(5,8));
+            pieceArray[5][9] = new Bishop(false,new Position(5,9));
+            pieceArray[5][10] = new Bishop(false,new Position(5,10));
+            //Added jumpy obis
+            pieceArray[3][0] = new Knight(true,new Position(3,0));
+            pieceArray[7][0] = new Knight(true,new Position(7,0));
+            pieceArray[3][8] = new Knight(false,new Position(3,8));
+            pieceArray[7][8] = new Knight(false,new Position(7,8));
         }
         catch(Exception e){}
 

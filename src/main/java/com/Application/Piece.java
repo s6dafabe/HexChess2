@@ -1,6 +1,7 @@
 package com.Application;
 
 public abstract class Piece {
+
     //The position this piece is on
     Position pos = null;
     boolean whitePiece;

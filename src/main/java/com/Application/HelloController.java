@@ -8,6 +8,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Paint;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 
 import java.io.FileInputStream;
@@ -30,7 +31,7 @@ public class HelloController {
         hex.setScaleY(30);
         hex.setLayoutX(center.xPos);
         hex.setLayoutY(center.yPos);
-        hex.setFill(Paint.valueOf(color));
+        hex.setFill(Color.web(color));
         return hex;
     }
     ImageView createPiece(Point center, Piece piece){
@@ -61,7 +62,8 @@ public class HelloController {
                         if(clickedPiece != null && clickedPiece.whitePiece == backendField.whiteToMove()){
                             selectedPiece = clickedPiece;
                             selectedField = fields[x][y];
-                            selectedField.setFill(Paint.valueOf("blueviolet"));
+                            Color selectedFieldColor = (Color)(selectedField.getFill());
+                            selectedField.setFill(selectedFieldColor.darker());
 
                         }
                     }
@@ -88,7 +90,8 @@ public class HelloController {
                     }
 
                     selectedPiece = null;
-                    selectedField.setFill(Paint.valueOf("blue"));
+                    Color selectedFieldColor = (Color)(selectedField.getFill());
+                    selectedField.setFill(selectedFieldColor.brighter());
                     selectedField = null;
                 }
 
@@ -107,7 +110,8 @@ public class HelloController {
                         if(piece.whitePiece == backendField.whiteToMove()){
                             selectedPiece = piece;
                             selectedField = fields[x][y];
-                            selectedField.setFill(Paint.valueOf("blueviolet"));
+                            Color selectedFieldColor = (Color)(selectedField.getFill());
+                            selectedField.setFill(selectedFieldColor.darker());
 
                         }
                     }
@@ -134,7 +138,8 @@ public class HelloController {
                     }
 
                     selectedPiece = null;
-                    selectedField.setFill(Paint.valueOf("blue"));
+                    Color selectedFieldColor = (Color)(selectedField.getFill());
+                    selectedField.setFill(selectedFieldColor.brighter());
                     selectedField = null;
                 }
 
@@ -169,10 +174,13 @@ public class HelloController {
         fields = new Polygon[11][11];
         pieceSprites = new ImageView[11][11];
 
+        String[] fieldColors = {"0xB5651D","0xDAAE7C","0xFFF8DC"};
+
         for (int j = 0; j < 6; j++) {
             for (int i =0; i<11; i++) {
                 Point pos = PlayingField.hexIndexToCoordinates(i,j,30);
-                fields[i][j] = createHexagon(pos.add(offset),"blue" );
+                int colorIndex = (i < 6) ? ((i+j) % 3) : ((10-i+j)%3);
+                fields[i][j] = createHexagon(pos.add(offset),fieldColors[colorIndex]);
                 fields[i][j].addEventFilter(MouseEvent.MOUSE_CLICKED,createHexEvent(i,j));
                 anchorPane.getChildren().add(fields[i][j]);
             }
@@ -180,8 +188,9 @@ public class HelloController {
 
         for (int j = 6; j < 11; j++) {
             for (int i =j-5; i<16-j; i++) {
+                int colorIndex = (i < 6) ? ((i+j) % 3) : ((10-i+j)%3);
                 Point pos = PlayingField.hexIndexToCoordinates(i,j,30);
-                fields[i][j] = createHexagon(pos.add(offset),"blue" );
+                fields[i][j] = createHexagon(pos.add(offset),fieldColors[colorIndex]);
                 fields[i][j].addEventFilter(MouseEvent.MOUSE_CLICKED,createHexEvent(i,j));
                 anchorPane.getChildren().add(fields[i][j]);
             }
@@ -195,3 +204,9 @@ public class HelloController {
     }
 
 }
+
+/*
+daae7c
+fff8dc
+b5651d
+ */
